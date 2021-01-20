@@ -14,14 +14,20 @@
     // throw new Error('Standard Error message')
 
     function CustomError(message) {
-    var instance = new Error(message);
-    return instance;
+        var instance = new Error(message);
+        return instance;
     }
-    // CustomError.prototype = Object.create(Error.prototype);
+    
+    CustomError.prototype = Object.create(Error.prototype); // mandatory line, otherwise issues are not reported to Rollbar
+    
+
+    // caught exception
     try{
         throw new CustomError('CustomException message');
     } catch (e) {
-        console.log(e);
+        Rollbar.error("Something went wrong", e);
     }
-
+    
+    // uncaught exception
+    throw new CustomError('CustomException message');
 </script>
