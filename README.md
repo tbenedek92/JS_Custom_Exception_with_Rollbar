@@ -1,2 +1,2 @@
-# js_custom_exception_with_rollbar
- Cofigure custom exception sending with rollbar
+# Description
+ Create custom exception and send it to Rollbar
