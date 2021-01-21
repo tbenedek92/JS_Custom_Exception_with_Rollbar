@@ -13,21 +13,26 @@
 
     // throw new Error('Standard Error message')
 
-    function CustomError(message) {
+    function CustomError(message, payload) {
         var instance = new Error(message);
+        instance.metadata = payload
+        console.log(instance)
         return instance;
     }
     
     CustomError.prototype = Object.create(Error.prototype); // mandatory line, otherwise issues are not reported to Rollbar
     
+    requestPayload = { someKey: 'someValue' };
 
     // caught exception
-    try{
-        throw new CustomError('CustomException message');
+   try{
+        throw new CustomError('CustomException message',requestPayload);
     } catch (e) {
-        Rollbar.error("Something went wrong", e);
-    }
+        e.requestPayload = requestPayload
+        Rollbar.error("Something went wrong", e, requestPayload);
+    } 
     
     // uncaught exception
-    throw new CustomError('CustomException message');
+    var x = new CustomError('CustomException message', 'randomstring');
+    throw x
 </script>
